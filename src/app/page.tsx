@@ -5,17 +5,9 @@ import { motion, useInView, useScroll, useTransform, AnimatePresence } from "fra
 import {
   Download, Monitor, Volume2, Waves, Zap, Sun, Hand,
   Cpu, BarChart3, TrendingUp, Activity, ArrowDown,
-  ChevronDown, Terminal, Sparkles,
-  Usb, Settings, MousePointer, Clock, Shield, Heart, ExternalLink,
+  ChevronDown, Terminal, Sparkles, FileCodeCorner,
+  Usb, Settings, MousePointer, Clock, Shield, Heart,
 } from "lucide-react";
-
-function GithubIcon({ className = "w-5 h-5" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-    </svg>
-  );
-}
 
 // ─── Animated Counter ───
 function Counter({ target, suffix = "", duration = 2 }: { target: number; suffix?: string; duration?: number }) {
@@ -67,14 +59,18 @@ function FeatureCard({ icon: Icon, title, desc, delay = 0 }: { icon: React.Eleme
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className="glass rounded-2xl p-6 hover:bg-white/[0.06] transition-all duration-300 group cursor-default hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/5"
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ duration: 0.6, delay, type: "spring", stiffness: 100, damping: 15 }}
+      whileHover={{ y: -6, transition: { duration: 0.25 } }}
+      className="glass rounded-2xl p-6 hover:bg-white/[0.07] transition-all duration-300 group cursor-default hover:shadow-xl hover:shadow-green-500/8 hover:border-green-500/15"
     >
-      <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4 group-hover:bg-green-500/20 transition-colors">
+      <motion.div
+        whileHover={{ rotate: [0, -10, 10, 0], transition: { duration: 0.5 } }}
+        className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center mb-4 group-hover:bg-green-500/20 transition-colors"
+      >
         <Icon className="w-6 h-6 text-green-400" />
-      </div>
+      </motion.div>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
       <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
     </motion.div>
@@ -130,50 +126,58 @@ function Navbar() {
 
   return (
     <>
-      {/* Desktop */}
+      {/* Desktop — floating pill navbar */}
       <motion.nav
         animate={{ y: hidden ? -100 : 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 hidden md:block transition-all duration-300 ${scrolled ? "glass shadow-lg shadow-black/20" : "bg-transparent"}`}
+        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden md:block"
       >
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-          <a href="#" className="flex items-center gap-2 text-xl font-bold">
-            <span className="text-2xl">👋</span>
-            <span className="gradient-text-green">MacSlapApp</span>
+        <div className={`flex items-center gap-1 px-2 py-1.5 rounded-full border transition-all duration-500 ${
+          scrolled
+            ? "bg-black/60 backdrop-blur-2xl border-white/10 shadow-xl shadow-black/40"
+            : "bg-black/30 backdrop-blur-xl border-white/5 shadow-lg shadow-black/20"
+        }`}>
+          <a href="#" className="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-white/10 transition-all duration-300">
+            <span className="text-lg">👋</span>
+            <span className="gradient-text-green text-sm font-bold">MacSlap</span>
           </a>
-          <div className="flex items-center gap-8">
-            {links.map(l => (
-              <a key={l.href} href={l.href} className="text-sm text-gray-400 hover:text-green-400 transition-colors">{l.label}</a>
-            ))}
-            <a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-all text-sm font-medium">
-              <GithubIcon className="w-4 h-4" /> GitHub
+          <div className="w-px h-4 bg-white/10 mx-1" />
+          {links.map(l => (
+            <a key={l.href} href={l.href}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-gray-400 hover:text-green-400 hover:bg-white/8 transition-all duration-300">
+              <l.icon className="w-3.5 h-3.5" />
+              {l.label}
             </a>
-          </div>
+          ))}
+          <div className="w-px h-4 bg-white/10 mx-1" />
+          <a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/15 text-green-400 hover:bg-green-500/25 transition-all duration-300 text-xs font-medium">
+            <FileCodeCorner className="w-3.5 h-3.5" /> GitHub
+          </a>
         </div>
       </motion.nav>
 
-      {/* Mobile bottom nav */}
+      {/* Mobile bottom nav — pill */}
       <motion.nav
         animate={{ y: hidden ? 100 : 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed bottom-4 left-4 right-4 z-50 md:hidden glass rounded-2xl shadow-lg shadow-black/40"
+        transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+        className="fixed bottom-4 left-4 right-4 z-50 md:hidden"
       >
-        <div className="flex items-center justify-around py-3">
-          <a href="#" className="flex flex-col items-center gap-1 text-green-400">
-            <Hand className="w-5 h-5" />
-            <span className="text-[10px]">Home</span>
+        <div className="flex items-center justify-around py-2.5 rounded-full bg-black/60 backdrop-blur-2xl border border-white/10 shadow-xl shadow-black/40">
+          <a href="#" className="flex flex-col items-center gap-0.5 text-green-400">
+            <Hand className="w-4 h-4" />
+            <span className="text-[9px]">Home</span>
           </a>
           {links.map(l => (
-            <a key={l.href} href={l.href} className="flex flex-col items-center gap-1 text-gray-400 hover:text-green-400 transition-colors">
-              <l.icon className="w-5 h-5" />
-              <span className="text-[10px]">{l.label}</span>
+            <a key={l.href} href={l.href} className="flex flex-col items-center gap-0.5 text-gray-400 hover:text-green-400 transition-all duration-300">
+              <l.icon className="w-4 h-4" />
+              <span className="text-[9px]">{l.label}</span>
             </a>
           ))}
           <a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
-            className="flex flex-col items-center gap-1 text-gray-400 hover:text-green-400 transition-colors">
-            <GithubIcon className="w-5 h-5" />
-            <span className="text-[10px]">GitHub</span>
+            className="flex flex-col items-center gap-0.5 text-gray-400 hover:text-green-400 transition-all duration-300">
+            <FileCodeCorner className="w-4 h-4" />
+            <span className="text-[9px]">GitHub</span>
           </a>
         </div>
       </motion.nav>
@@ -224,14 +228,20 @@ export default function Home() {
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 mt-10">
-            <a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-green-500 text-black font-semibold text-lg hover:bg-green-400 transition-all hover:scale-105 hover:shadow-lg hover:shadow-green-500/25">
-              <GithubIcon className="w-5 h-5" /> Get It Free
-            </a>
-            <a href="#setup"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full glass font-semibold text-lg hover:bg-white/10 transition-all hover:scale-105">
+            <motion.a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(74, 222, 128, 0.3)" }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-green-500 text-black font-semibold text-lg hover:bg-green-400 transition-colors">
+              <FileCodeCorner className="w-5 h-5" /> Get It Free
+            </motion.a>
+            <motion.a href="#setup"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-full glass font-semibold text-lg hover:bg-white/10 transition-colors">
               <Terminal className="w-5 h-5 text-green-400" /> Quick Setup
-            </a>
+            </motion.a>
           </motion.div>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
@@ -256,12 +266,18 @@ export default function Home() {
               { value: 130, suffix: "+", label: "Sound Effects" },
               { value: 125, suffix: "Hz", label: "Sample Rate" },
             ].map((s, i) => (
-              <div key={i} className="glass rounded-2xl p-6 text-center">
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, type: "spring", stiffness: 120, damping: 14 }}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                className="glass rounded-2xl p-6 text-center hover:border-green-500/15 transition-colors cursor-default">
                 <div className="text-3xl md:text-4xl font-bold gradient-text-green">
                   <Counter target={s.value} suffix={s.suffix} />
                 </div>
                 <div className="text-sm text-gray-400 mt-2">{s.label}</div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </section>
@@ -320,7 +336,9 @@ export default function Home() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05, duration: 0.4 }}
-                  className="glass rounded-2xl p-5 text-center hover:bg-white/[0.06] transition-all hover:scale-105 cursor-default"
+                  whileHover={{ scale: 1.08, y: -4 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="glass rounded-2xl p-5 text-center hover:bg-white/[0.07] transition-colors cursor-default hover:shadow-lg hover:shadow-green-500/5 hover:border-green-500/15"
                 >
                   <div className="text-3xl mb-3">{pack.emoji}</div>
                   <div className="font-semibold">{pack.name}</div>
@@ -540,14 +558,20 @@ export default function Home() {
               </h2>
               <p className="text-gray-400 mb-8 text-lg">Free forever. Open source. No license. No DRM. Just vibes.</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-green-500 text-black font-semibold text-lg hover:bg-green-400 transition-all hover:scale-105 hover:shadow-lg hover:shadow-green-500/25">
-                  <GithubIcon className="w-5 h-5" /> Get It on GitHub
-                </a>
-                <a href="https://github.com/AbdullahFID/MacSlapApp/releases" target="_blank" rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-full glass font-semibold text-lg hover:bg-white/10 transition-all hover:scale-105">
+                <motion.a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(74, 222, 128, 0.3)" }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-green-500 text-black font-semibold text-lg hover:bg-green-400 transition-colors">
+                  <FileCodeCorner className="w-5 h-5" /> Get It on GitHub
+                </motion.a>
+                <motion.a href="https://github.com/AbdullahFID/MacSlapApp/releases" target="_blank" rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="flex items-center justify-center gap-2 px-8 py-4 rounded-full glass font-semibold text-lg hover:bg-white/10 transition-colors">
                   <Download className="w-5 h-5 text-green-400" /> Download Release
-                </a>
+                </motion.a>
               </div>
             </motion.div>
           </div>
@@ -563,7 +587,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-6 text-sm text-gray-400">
               <a href="https://github.com/AbdullahFID/MacSlapApp" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors flex items-center gap-1">
-                <GithubIcon className="w-4 h-4" /> GitHub
+                <FileCodeCorner className="w-4 h-4" /> GitHub
               </a>
               <a href="https://github.com/AbdullahFID/MacSlapApp/releases" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors flex items-center gap-1">
                 <Download className="w-4 h-4" /> Releases
