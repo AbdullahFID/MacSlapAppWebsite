@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MacSlapApp Website
 
-## Getting Started
+Landing page for [MacSlapApp](https://github.com/AbdullahFID/MacSlapApp) — the open-source app that makes your MacBook scream when you slap it.
 
-First, run the development server:
+**Live at [macslap.app](https://macslap.app)**
+
+## Tech Stack
+
+- **Next.js 16** with App Router
+- **Tailwind CSS v4**
+- **Framer Motion** for scroll animations, spring physics, and hover interactions
+- **Lucide React** for icons
+- **TypeScript**
+- Hosted on **Vercel**
+
+## Features
+
+- Dark glassmorphism design with animated background blobs
+- Floating pill navbar (desktop: centered, mobile: bottom bar)
+- Scroll-triggered entrance animations with spring physics
+- Interactive hover effects on all cards and buttons
+- Animated stat counters
+- Terminal-style setup instructions
+- FAQ accordion with smooth expand/collapse
+- Feature comparison table vs SlapMac
+- Full SEO: meta tags, OpenGraph, Twitter cards, JSON-LD structured data
+- Mobile-responsive across all breakpoints
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# Install dependencies
+pnpm install
+
+# Run dev server
 pnpm dev
-# or
-bun dev
+
+# Build for production
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Connected to Vercel via GitHub. Pushes to `main` auto-deploy.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To deploy manually:
 
-## Learn More
+```bash
+pnpm build
+npx vercel --prod
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Related
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [MacSlapApp](https://github.com/AbdullahFID/MacSlapApp) — the actual app (Swift, IOKit, private macOS APIs)
+- [SlapMac](https://slapmac.com/) — the original paid app that inspired this
+- [taigrr/spank](https://github.com/taigrr/spank) — Go implementation that helped with accelerometer research
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
